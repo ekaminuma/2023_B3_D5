@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Colorful To-Do App</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f2f2f2;
+    }
+    
+    .todo-container {
+      width: 400px;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .todo-input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    
+    .todo-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .todo-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .todo-item:hover {
+      background-color: #e1e1e1;
+    }
+    
+    .todo-item span {
+      flex-grow: 1;
+      margin-left: 10px;
+    }
+    
+    .delete-btn {
+      background-color: #ff3333;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="todo-container">
+    <input type="text" id="todo-input" class="todo-input" placeholder="Add a to-do">
+    <ul id="todo-list" class="todo-list"></ul>
+  </div>
+
+  <script>
+    var todoList = document.getElementById("todo-list");
+    var todoInput = document.getElementById("todo-input");
+
+    todoInput.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        addTodo();
+      }
+    });
+
+    function addTodo() {
+      var todoText = todoInput.value.trim();
+
+      if (todoText === "") {
+        return;
+      }
+
+      var todoItem = document.createElement("li");
+      todoItem.classList.add("todo-item");
+
+      var checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.addEventListener("change", toggleTodo);
+
+      var span = document.createElement("span");
+      span.textContent = todoText;
+
+      var deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.classList.add("delete-btn");
+      deleteBtn.addEventListener("click", deleteTodo);
+
+      todoItem.appendChild(checkbox);
+      todoItem.appendChild(span);
+      todoItem.appendChild(deleteBtn);
+
+      todoList.appendChild(todoItem);
+
+      todoInput.value = "";
+    }
+
+    function toggleTodo() {
+      var todoItem = this.parentElement;
+      todoItem.classList.toggle("completed");
+    }
+
+    function deleteTodo() {
+      var todoItem = this.parentElement;
+      todoList.removeChild(todoItem);
+    }
+  </script>
+</body>
+</html>

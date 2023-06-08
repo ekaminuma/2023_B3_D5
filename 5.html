@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #canvas {
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <button onclick="showMoon()" id="greenBtn">緑色のボタン</button>
+    <button onclick="fallingStar()" id="blueBtn">青色のボタン</button>
+    <button onclick="sunrise()" id="yellowBtn">黄色のボタン</button>
+
+    <script>
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+      var greenBtn = document.getElementById("greenBtn");
+      var blueBtn = document.getElementById("blueBtn");
+      var yellowBtn = document.getElementById("yellowBtn");
+
+      var isMoonVisible = false;
+      var isStarFalling = false;
+      var isSunrise = false;
+
+      function disableButtons() {
+        greenBtn.disabled = true;
+        blueBtn.disabled = true;
+        yellowBtn.disabled = true;
+      }
+
+      function enableButtons() {
+        greenBtn.disabled = false;
+        blueBtn.disabled = false;
+        yellowBtn.disabled = false;
+      }
+
+      function showMoon() {
+        if (!isMoonVisible && !isStarFalling && !isSunrise) {
+          disableButtons();
+
+          isMoonVisible = true;
+          isStarFalling = false;
+          isSunrise = false;
+
+          // 描画のリセット
+          context.clearRect(0, 0, canvas.width, canvas.height);
+
+          // 背景の描画
+          context.fillStyle = "black";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+
+          // 月の描画
+          animateMoon();
+
+          setTimeout(enableButtons, 3000);
+        }
+      }
+
+      function fallingStar() {
+        if (!isMoonVisible && !isStarFalling && !isSunrise) {
+          disableButtons();
+
+          isMoonVisible = false;
+          isStarFalling = true;
+          isSunrise = false;
+
+          // 描画のリセット
+          context.clearRect(0, 0, canvas.width, canvas.height);
+
+          // 背景の描画
+          context.fillStyle = "black";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+
+          animateStar();
+
+          setTimeout(enableButtons, 3000);
+        }
+      }
+
+      function sunrise() {
+        if (!isMoonVisible && !isStarFalling && !isSunrise) {
+          disableButtons();
+
+          isMoonVisible = false;
+          isStarFalling = false;
+          isSunrise = true;
+
+          // 描画のリセット
+          context.clearRect(0, 0, canvas.width, canvas.height);
+
+          animateSunrise();
+
+          setTimeout(enableButtons, 3000);
+        }
+      }
+
+      function animateMoon() {
+        var moonRadius = 50;
+        var moonX = canvas.width / 2;
+        var moonY = canvas.height / 2;
+        var startAngle = 0;
+        var endAngle = Math.PI * 2;
+
+        var interval = setInterval(function () {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+
+          // 背景の描画
+          context.fillStyle = "black";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+
+          // 月の描画
+          context.beginPath();
+          context.arc(moonX, moonY, moonRadius, startAngle, endAngle);
+          context.fillStyle = "yellow";
+          context.fill();
+          context.closePath();
+
+          moonRadius += 1;
+
+          // アニメーション終了後に他のボタンを押せるようにする
+          if (moonRadius >= 100) {
+            clearInterval(interval);
+            isMoonVisible = false;
+            enableButtons();
+          }
+        }, 30);
+      }
+
+      function animateStar() {
+        var starY = 0;
+        var starX = Math.random() * canvas.width;
+
+        var interval = setInterval(function () {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+
+          // 背景の描画
+          context.fillStyle = "black";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+
+          // 流れ星の描画
+          context.beginPath();
+          context.moveTo(starX, starY);
+          context.lineTo(starX + 50, starY + 50);
+          context.strokeStyle = "white";
+          context.lineWidth = 2;
+          context.stroke();
+          context.closePath();
+
+          starY += 5;
+
+          // 流れ星がキャンバス外に出たらアニメーション終了
+          if (starY > canvas.height) {
+            clearInterval(interval);
+            isStarFalling = false;
+            enableButtons();
+          }
+        }, 50);
+      }
+
+      function animateSunrise() {
+        var gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, "black");
+        gradient.addColorStop(0.2, "purple");
+        gradient.addColorStop(0.4, "pink");
+        gradient.addColorStop(0.6, "rgb(255, 192, 203)"); // ピンクオレンジ
+        gradient.addColorStop(0.8, "yellow");
+        gradient.addColorStop(1, "white");
+
+        var skyColor = 0;
+        var interval = setInterval(function () {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+
+          // 夜明けの描画
+          context.fillStyle = gradient;
+          context.fillRect(0, 0, canvas.width, canvas.height);
+
+          // アニメーション終了後に他のボタンを押せるようにする
+          if (skyColor >= 1) {
+            clearInterval(interval);
+            isSunrise = false;
+            enableButtons();
+          }
+
+          skyColor += 0.01;
+          gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+          gradient.addColorStop(0, `rgba(0, 0, 0, ${skyColor})`); // 黒から紫
+          gradient.addColorStop(0.2, `rgba(128, 0, 128, ${skyColor})`); // 紫からピンク
+          gradient.addColorStop(0.4, `rgba(255, 105, 180, ${skyColor})`); // ピンクからピンクオレンジ
+          gradient.addColorStop(0.6, `rgba(255, 192, 203, ${skyColor})`); // ピンクオレンジから黄色
+          gradient.addColorStop(0.8, `rgba(255, 255, 255, ${skyColor})`); // 黄色から白
+          gradient.addColorStop(1, `rgba(255, 255, 255, ${skyColor})`); // 白
+        }, 30);
+      }
+    </script>
+  </body>
+</html>

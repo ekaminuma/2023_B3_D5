@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>大当たり抽選</title>
+  <style>
+    @keyframes blink {
+      0% { color: red; }
+      50% { color: gold; }
+      100% { color: red; }
+    }
+  </style>
+</head>
+<body>
+  <button id="myButton">抽選する</button>
+  <p id="message"></p>
+  <p id="rotations">回転数: 0</p>
+
+  <script>
+    const button = document.getElementById('myButton');
+    const messageElement = document.getElementById('message');
+    const rotationsElement = document.getElementById('rotations');
+
+    let rotationsCount = 0; // 回転数
+    let hitCount = 0; // 大当たり回数
+
+    const button_click = () => {
+      if (hitCount >= 3) {
+        return; // 3回以上大当たりした場合、ボタンを無効化して終了
+      }
+
+      const randomNumber = Math.floor(Math.random() * 319) + 1; // 大当たり確率を1/319に変更
+      const winningNumber = 1;
+
+      if (randomNumber === winningNumber) {
+        button.style.animation = 'blink 1s infinite';
+        messageElement.style.color = 'red'; // テキストの色を赤に設定
+        messageElement.style.fontSize = '36px';
+        messageElement.textContent = '777'; // 大当たり時の表示する文字を「777」に変更
+        rotationsCount = 0; // 回転数をリセット
+        hitCount++; // 大当たり回数をインクリメント
+        button.disabled = true; // 大当たり時にボタンを無効化
+      } else {
+        const messages = [
+          '残念',
+          '諦めるな！！！',
+          '面白くなってきた',
+          'お前の本気を見せてみろ'
+        ];
+        const randomIndex = Math.floor(Math.random() * messages.length);
+        const randomMessage = messages[randomIndex];
+        messageElement.textContent = randomMessage;
+        messageElement.style.color = 'black'; // テキストの色を黒に設定
+        messageElement.style.fontSize = '24px';
+        rotationsCount++; // 回転数をインクリメント
+      }
+
+      rotationsElement.textContent = `回転数: ${rotationsCount}`;
+    };
+
+    button.addEventListener('click', button_click);
+  </script>
+</body>
+</html>

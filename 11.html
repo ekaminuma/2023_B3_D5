@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>危険</title>
+  <style>
+    #danger-text {
+      font-size: 48px;
+      font-weight: bold;
+      color: red;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <button id="button">光らせる</button>
+  <div id="danger-text">危険</div>
+
+  <script>
+    var dangerText = document.getElementById("danger-text");
+    var isFlashing = false;
+    var interval;
+
+    function toggleFlash() {
+      if (isFlashing) {
+        clearInterval(interval);
+        dangerText.style.color = "red";
+        isFlashing = false;
+      } else {
+        interval = setInterval(function() {
+          dangerText.style.color = (dangerText.style.color === "red") ? "yellow" : "red";
+        }, 500);
+        isFlashing = true;
+      }
+    }
+
+    var button = document.getElementById("button");
+    button.addEventListener("click", toggleFlash);
+  </script>
+</body>
+</html>

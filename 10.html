@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>じゃんけんゲーム</title>
+</head>
+<body>
+  <h1>じゃんけんゲーム</h1>
+  <button onclick="playGame()">じゃんけんをする</button>
+  <p id="result"></p>
+
+  <script>
+    function playGame() {
+      var choices = ["グー", "チョキ", "パー"];
+      var computerChoice = choices[Math.floor(Math.random() * 3)];
+
+      var playerChoice = prompt("じゃんけん！グー、チョキ、パーのいずれかを選んでください。");
+
+      if (playerChoice === null) {
+        return;
+      }
+
+      playerChoice = playerChoice.trim().toLowerCase();
+
+      if (!choices.includes(playerChoice)) {
+        alert("無効な選択です。もう一度やり直してください。");
+        return;
+      }
+
+      var result = getResult(playerChoice, computerChoice);
+      var resultText = "あなたの選択: " + playerChoice + "<br>コンピュータの選択: " + computerChoice + "<br>結果: " + result;
+
+      document.getElementById("result").innerHTML = resultText;
+    }
+
+    function getResult(playerChoice, computerChoice) {
+      if (playerChoice === computerChoice) {
+        return "引き分けです！";
+      } else if (
+        (playerChoice === "グー" && computerChoice === "チョキ") ||
+        (playerChoice === "チョキ" && computerChoice === "パー") ||
+        (playerChoice === "パー" && computerChoice === "グー")
+      ) {
+        return "あなたの勝ちです！";
+      } else {
+        return "あなたの負けです！";
+      }
+    }
+  </script>
+</body>
+</html>

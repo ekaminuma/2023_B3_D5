@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>アカウント名生成ツール</title>
+  </head>
+  <body>
+    <h1>アカウント名生成ツール</h1>
+    <input type="text" id="word" placeholder="アカウント名に含めたいワードを入力してください">
+    <button onclick="generate()">アカウント名を生成する</button>
+    <p id="result"></p>
+
+    <script>
+      function generate() {
+        // 入力されたワードを取得
+        const word = document.getElementById("word").value;
+
+        // ランダムなアカウント名を生成
+        let accountName = generateRandomString(8) + "_" + word;
+
+        // ページにアカウント名を表示
+        document.getElementById("result").textContent = "あなたのアカウント名は「" + accountName + "」です。";
+      }
+
+      function generateRandomString(length) {
+        // ランダムな文字列を生成するための文字セット
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.";
+
+        // 生成する文字列の長さ
+        const randomStringLength = length;
+
+        // ランダムな文字列を生成
+        let randomString = "";
+        for (let i = 0; i < randomStringLength; i++) {
+          const randomIndex = Math.floor(Math.random() * charset.length);
+          randomString += charset[randomIndex];
+        }
+        return randomString;
+      }
+    </script>
+  </body>
+</html>

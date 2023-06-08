@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>イライラ貯金アプリ</title>
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    
+    h1 {
+      color: #333333;
+    }
+    
+    p {
+      font-size: 20px;
+      color: #666666;
+    }
+    
+    #savings-amount {
+      font-size: 24px;
+      font-weight: bold;
+      color: #009688;
+    }
+    
+    .character-container {
+      position: relative;
+      display: inline-block;
+      margin-top: 20px;
+    }
+    
+    .character {
+      font-size: 20px;
+    }
+    
+    .speech-bubble {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      color: #f44336;
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: left;
+    }
+    
+    .speech-bubble:before {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 10px solid transparent;
+      border-top: 10px solid #ffffff;
+    }
+    
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #009688;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    button:hover {
+      background-color: #00796b;
+    }
+  </style>
+  <script>
+    let savings = 0;
+    const encouragements = [
+      "スターバックスの新作を飲んでみませんか？",
+      "早めに就寝してしまいましょう！",
+      "リラックスしてゆっくり過ごしましょう。",
+      "美味しいおやつを食べてリフレッシュしましょう。",
+      "好きな映画を見て楽しい時間を過ごしましょう。",
+      "散歩に出かけて新しい景色を見つけましょう。",
+      "心地よい音楽を聴いてリフレッシュしましょう。",
+      "大好きな趣味に没頭して楽しい時間を過ごしましょう。",
+      "笑いのあるYouTube動画を見てストレスを解消しましょう。",
+      "大好きな人と話して楽しい時間を過ごしましょう。"
+    ];
+    
+    function addToSavings() {
+      savings += 1;
+      document.getElementById("savings-amount").textContent = savings;
+      
+      if (savings % 10 === 0) {
+        const randomIndex = Math.floor(Math.random() * encouragements.length);
+        const encouragement = encouragements[randomIndex];
+        
+        document.getElementById("good-luck-message").textContent = encouragement;
+        document.getElementById("good-luck-message").style.display = "block";
+      } else {
+        document.getElementById("good-luck-message").style.display = "none";
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>イライラ貯金アプリ</h1>
+  
+  <button onclick="addToSavings()">イライラ貯金する</button>
+  
+  <p>イライラ数: <span id="savings-amount">0</span></p>
+  
+  <div class="character-container">
+    <div class="character">
+      <img src="cat.png" alt="キャラクター画像">
+    </div>
+    <div class="speech-bubble" id="good-luck-message" style="display: none;">
+      スターバックスの新作を飲んでみませんか？
+    </div>
+  </div>
+</body>
+</html>

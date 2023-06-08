@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>給料計算</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    input[type="text"] {
+      padding: 5px;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>給料計算ツール</h1>
+  
+  <label for="attendanceTime">出勤時間（例: 9:00）：</label>
+  <input type="text" id="attendanceTime" placeholder="出勤時間">
+  
+  <label for="hourlyRate">1時間あたりの給料：</label>
+  <input type="text" id="hourlyRate" placeholder="給料率（円）">
+  
+  <button onclick="calculateSalary()">給料を計算する</button>
+  
+  <div id="result"></div>
+  
+  <script>
+    function calculateSalary() {
+      var attendanceTime = document.getElementById("attendanceTime").value;
+      var hourlyRate = parseFloat(document.getElementById("hourlyRate").value);
+      
+      if (isNaN(hourlyRate)) {
+        alert("給料率には数値を入力してください。");
+        return;
+      }
+      
+      var timeParts = attendanceTime.split(":");
+      var hours = parseInt(timeParts[0]);
+      var minutes = parseInt(timeParts[1]);
+      
+      if (isNaN(hours) || isNaN(minutes)) {
+        alert("出勤時間の形式が正しくありません。");
+        return;
+      }
+      
+      var totalMinutes = (hours * 60) + minutes;
+      var salary = totalMinutes * (hourlyRate / 60);
+      
+      var result = document.getElementById("result");
+      result.innerHTML = "給料：" + salary.toFixed(2) + "円";
+    }
+  </script>
+</body>
+</html>
+</html>

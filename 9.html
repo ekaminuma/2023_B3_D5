@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>天気ルーレット</title>
+    <style>
+        /* ルーレットのスタイル */
+        .roulette {
+            font-size: 24px;
+            font-weight: bold;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* 結果テキストのスタイル */
+        #result {
+            font-size: 24px;
+            text-align: center;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="startRoulette()">ボタンを押して運勢を見る</button>
+    <p id="result">今日のあなたの運勢です！！</p>
+
+    <script>
+        function startRoulette() {
+            var weather = ["快晴", "曇り", "雨", "雪", "台風", "嵐"];
+            var colors = ["red", "gray", "blue", "white", "green", "black"];
+            var resultElement = document.getElementById("result");
+            var roulette = document.createElement("div");
+            roulette.classList.add("roulette");
+
+            var rotationTime = 100; // ルーレットの回転速度（ミリ秒）
+            var stopTime = 5000; // ルーレットが止まる時間（ミリ秒）
+
+            // ルーレットを表示
+            resultElement.style.visibility = "hidden";
+            document.body.appendChild(roulette);
+
+            // ルーレットを一定時間回し続ける
+            var rotationInterval = setInterval(rotateRoulette, rotationTime);
+
+            // ルーレットを停止させる
+            setTimeout(stopRoulette, stopTime);
+
+            function rotateRoulette() {
+                var randomIndex = Math.floor(Math.random() * weather.length);
+                roulette.innerHTML = weather[randomIndex];
+                roulette.style.backgroundColor = colors[randomIndex];
+            }
+
+            function stopRoulette() {
+                clearInterval(rotationInterval);
+                resultElement.style.visibility = "visible";
+                resultElement.innerHTML = "今日のあなたの運勢です！！ " + roulette.innerHTML;
+                document.body.removeChild(roulette);
+            }
+        }
+    </script>
+</body>
+</html>

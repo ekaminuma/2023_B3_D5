@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Breakfast Recommendation</title>
+  <style>
+    #container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #title {
+      font-family: "筑紫A丸ゴシック", sans-serif;
+      font-size: 24px;
+      color: orange;
+      margin-bottom: 20px;
+    }
+
+    #options {
+      display: flex;
+    }
+
+    .option-button {
+      margin-right: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      font-family: "筑紫A丸ゴシック", sans-serif;
+      color: white;
+      background-color: orange;
+      border: none;
+      cursor: pointer;
+    }
+
+    #quiz {
+      font-family: "筑紫A丸ゴシック", sans-serif;
+      font-size: 16px;
+      color: red;
+      margin-top: 20px;
+      display: none;
+    }
+
+    #answer {
+      font-family: "筑紫A丸ゴシック", sans-serif;
+      font-size: 16px;
+      color: green;
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1 id="title">今日の朝ご飯は何にしよう？</h1>
+    <div id="options">
+      <button class="option-button" onclick="showQuiz('toast')">トースト</button>
+      <button class="option-button" onclick="showQuiz('yogurt')">ヨーグルト</button>
+      <button class="option-button" onclick="showQuiz('tamagoyaki')">卵焼き</button>
+    </div>
+    <p id="quiz"></p>
+    <p id="answer"></p>
+  </div>
+
+  <script>
+    function showQuiz(option) {
+      var quizElement = document.getElementById("quiz");
+      var answerElement = document.getElementById("answer");
+      var quizText = "";
+      var answerText = "";
+
+      switch (option) {
+        case "toast":
+          quizText = "トーストに最適なトッピングは何でしょう？";
+          answerText = "正解はバターとジャムです！";
+          break;
+        case "yogurt":
+          quizText = "ヨーグルトにおすすめのトッピングは何でしょう？";
+          answerText = "正解はグラノーラです！";
+          break;
+        case "tamagoyaki":
+          quizText = "卵焼きに加える具材は何が好きですか？";
+          answerText = "正解はネギです！";
+          break;
+      }
+
+      quizElement.textContent = "クイズです！ " + quizText;
+      quizElement.style.display = "block";
+
+      setTimeout(function() {
+        answerElement.textContent = answerText;
+        answerElement.style.display = "block";
+      }, 15000);
+    }
+  </script>
+</body>
+</html>

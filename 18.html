@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>障害物を避けて進むランゲーム</title>
+    <style>
+      #gameCanvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+      // JavaScriptコードをここに追加する
+
+      // ゲーム画面のサイズ
+      const gameWidth = 400;
+      const gameHeight = 600;
+
+      // プレーヤーのサイズと初期位置
+      const playerWidth = 50;
+      const playerHeight = 50;
+      const playerStartX = gameWidth / 2 - playerWidth / 2;
+      const playerStartY = gameHeight - playerHeight - 10;
+
+      // 障害物のサイズと速度
+      const obstacleWidth = 150;
+      const obstacleHeight = 10;
+      let obstacleSpeed = 7; // 障害物の初期速度
+      const obstacleInterval = 300; // 障害物の出現間隔（ミリ秒）
+
+      // ゲームオーバーフラグ
+      let gameOver = false;
+
+      // ゲームオブジェクト
+      const canvas = document.getElementById("gameCanvas");
+      const context = canvas.getContext("2d");
+      canvas.width = gameWidth;
+      canvas.height = gameHeight;
+
+      // プレーヤーオブジェクト
+      const player = {
+        x: playerStartX,
+        y: playerStartY,
+        width: playerWidth,
+        height: playerHeight,
+      };
+
+      // 障害物オブジェクト
+      const obstacle = {
+        x: 0,
+        y: 0,
+        width: obstacleWidth,
+        height: obstacleHeight,
+      };
+
+      // キーボードのイベントリスナーを追加
+      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("keyup", handleKeyUp);
+
+      // 左右キーの状態を追跡
+      let leftKeyPressed = false;
+      let rightKeyPressed = false;
+
+      // ゲーム開始時のタイムスタンプ
+      let startTime;
+
+      // 再プレイボタン
+      const replayButton = document.createElement("button");
+      replayButton.innerText = "再プレイ";
+      replayButton.style.position = "absolute";
+      replayButton.style.left = gameWidth / 2 - 50 + "px";
+      replayButton.style.top = gameHeight / 2 + 50 + "px";
+      replayButton.style.display = "none";
+      canvas.parentNode.appendChild(replayButton);
+      replayButton.addEventListener("click", restartGame);
+
+      // ゲームループ
+      function gameLoop(timestamp) {
+        if (!startTime) {
+          startTime = timestamp;
+        }
+
+        // 経過時間を計算
+        const elapsedTime = timestamp - startTime;
+
+        if (!gameOver) {
+          // 画面をクリア
+          context.clearRect(0, 0, gameWidth, gameHeight);
+
+          // プレーヤーを描画
+          context.fillStyle = "blue";
+          context.fillRect(player.x, player.y, player.width, player.height);
+
+          // 障害物を描画
+          context.fillStyle = "red";
+          context.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+
+          // プレーヤーの移動
+          if (leftKeyPressed && player.x > 0) {
+            player.x -= 5;
+          } else if (rightKeyPressed && player.x < gameWidth - player.width) {
+            player.x += 5;
+          }
+
+          // 障害物の移動
+          obstacle.y += obstacleSpeed;
+
+          // 衝突判定
+          if (
+            player.x < obstacle.x + obstacle.width &&
+            player.x + player.width > obstacle.x &&
+            player.y < obstacle.y + obstacle.height &&
+            player.y + player.height > obstacle.y
+          ) {
+            gameOver = true;
+          }
+
+          // 障害物が画面外に出たら再配置
+          if (obstacle.y > gameHeight) {
+            obstacle.x = Math.random() * (gameWidth - obstacle.width);
+            obstacle.y = -obstacle.height;
+
+            // 障害物の速度を少しずつ上昇させる
+            obstacleSpeed += 0.5;
+          }
+
+          // ゲームループの再実行
+          requestAnimationFrame(gameLoop);
+        } else {
+          // ゲームオーバー時の処理
+          context.font = "30px Arial";
+          context.fillStyle = "black";
+          context.fillText("Game Over", gameWidth / 2 - 80, gameHeight / 2);
+
+          // 経過時間を表示
+          context.fillText("Time: " + (elapsedTime / 1000).toFixed(2) + "s", gameWidth / 2 - 80, gameHeight / 2 + 50);
+
+          // 再プレイボタンを表示
+          replayButton.style.display = "block";
+        }
+      }
+
+      // 再プレイボタンをクリックしたときの処理
+      function restartGame() {
+        // 初期化処理
+        player.x = playerStartX;
+        player.y = playerStartY;
+        obstacle.x = Math.random() * (gameWidth - obstacle.width);
+        obstacle.y = -obstacle.height;
+        obstacleSpeed = 7;
+        gameOver = false;
+        startTime = null;
+
+        // 再プレイボタンを非表示にする
+        replayButton.style.display = "none";
+
+        // ゲームループの再実行
+        requestAnimationFrame(gameLoop);
+      }
+
+      // キーダウンイベントハンドラ
+      function handleKeyDown(event) {
+        if (event.keyCode === 37) {
+          leftKeyPressed = true;
+        } else if (event.keyCode === 39) {
+          rightKeyPressed = true;
+        }
+      }
+
+      // キーアップイベントハンドラ
+      function handleKeyUp(event) {
+        if (event.keyCode === 37) {
+          leftKeyPressed = false;
+        } else if (event.keyCode === 39) {
+          rightKeyPressed = false;
+        }
+      }
+
+      // ゲームループの開始
+      requestAnimationFrame(gameLoop);
+    </script>
+  </body>
+</html>
+

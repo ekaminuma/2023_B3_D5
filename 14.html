@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ランダムなコード進行を生成する</title>
+</head>
+<body>
+  <button onclick="generateRandomChordProgression()">コード進行を生成する</button>
+  <p id="output"></p>
+
+  <script>
+    // 和音のリスト
+    const chordList = ['Ⅰ', 'Ⅱm', 'Ⅲm', 'Ⅳ', 'Ⅴ', 'Ⅵm', 'Ⅶdim'];
+
+    function generateRandomChordProgression() {
+      const progression = [];
+
+      // ランダムに和音を選ぶ
+      while (progression.length < 16) {
+        const randomIndex = Math.floor(Math.random() * chordList.length);
+        const randomChord = chordList[randomIndex];
+        progression.push(randomChord);
+      }
+
+      const formattedProgression = formatChordProgression(progression);
+      document.getElementById('output').textContent = formattedProgression;
+    }
+
+    // コード進行の整形
+    function formatChordProgression(progression) {
+      const formattedChords = [];
+      for (let i = 0; i < progression.length; i++) {
+        if (i % 4 === 0 && i > 0) {
+          formattedChords.push('｜');
+        }
+        formattedChords.push(progression[i]);
+        formattedChords.push(' ');
+      }
+      return formattedChords.join('');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QRコード生成</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #urlInput {
+      padding: 5px;
+      width: 300px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    canvas {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>QRコード生成</h1>
+
+  <input type="text" id="urlInput" placeholder="URLを入力してください">
+  <button onclick="generateQRCode()">QRコード生成</button>
+  <br>
+  <br>
+  <canvas id="qrCanvas"></canvas>
+
+  <script>
+    function generateQRCode() {
+      var url = document.getElementById("urlInput").value;
+
+      if (url.trim() === "") {
+        alert("URLを入力してください");
+        return;
+      }
+
+      var qr = new QRious({
+        element: document.getElementById("qrCanvas"),
+        value: url,
+        size: 200
+      });
+    }
+  </script>
+</body>
+</html>

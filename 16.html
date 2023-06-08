@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ball Simulation</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500"></canvas>
+
+  <script>
+    // ボールの設定
+    const ballCount = 30;
+    const ballRadius = 5;
+    const redForce = 0.02;   // 赤色の球が受ける斥力の強さ
+    const blueForce = 0.01; // 青色の球が受ける引力の強さ
+    const greenForce = 0.2; // 緑色の球が受ける引力の強さ
+
+    // キャンバスの設定
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+
+    // ボールの生成
+    let balls = [];
+    for (let i = 0; i < ballCount; i++) {
+      const ball = {
+        x: Math.random() * canvasWidth,
+        y: Math.random() * canvasHeight,
+        vx: Math.random() - 0.5, // ランダムな速度
+        vy: Math.random() - 0.5, // ランダムな速度
+        color: getRandomColor()
+      };
+      balls.push(ball);
+    }
+
+    // メインループ
+    function mainLoop() {
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      for (let i = 0; i < balls.length; i++) {
+        const ball = balls[i];
+
+        // 速度を更新
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+
+        // 画面端でループ
+        if (ball.x > canvasWidth) {
+          ball.x = 0;
+        } else if (ball.x < 0) {
+          ball.x = canvasWidth;
+        }
+
+        if (ball.y > canvasHeight) {
+          ball.y = 0;
+        } else if (ball.y < 0) {
+          ball.y = canvasHeight;
+        }
+
+        // ボールを描画
+        context.beginPath();
+        context.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
+        context.fillStyle = ball.color;
+        context.fill();
+        context.closePath();
+
+        // 最も近いボールを検索
+        const nearestBall = findNearestBall(i);
+
+        // 力の計算と適用
+        if (ball.color === 'red' && nearestBall.color === 'blue') {
+          applyForce(ball, nearestBall, redForce);
+        } else if (ball.color === 'blue' && nearestBall.color === 'green') {
+          applyForce(ball, nearestBall, -blueForce);
+        } else if (ball.color === 'green' && nearestBall.color === 'red') {
+          applyRotation(ball, nearestBall, greenForce);
+        }
+      }
+
+      requestAnimationFrame(mainLoop);
+    }
+
+    // 最も近いボールを検索
+    function findNearestBall(index) {
+      const ball = balls[index];
+      let minDistance = Number.MAX_VALUE;
+      let nearestBall = null;
+
+      for (let i = 0; i < balls.length; i++) {
+        if (i === index) continue;
+
+        const otherBall = balls[i];
+        const distance = getDistance(ball, otherBall);
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestBall = otherBall;
+        }
+      }
+
+      return nearestBall;
+    }
+
+    // 2つのボールの距離を計算
+    function getDistance(ball1, ball2) {
+      const dx = ball2.x - ball1.x;
+      const dy = ball2.y - ball1.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    // 力を適用
+    function applyForce(ball1, ball2, force) {
+      const dx = ball2.x - ball1.x;
+      const dy = ball2.y - ball1.y;
+      const distance = getDistance(ball1, ball2);
+      const nx = dx / distance;
+      const ny = dy / distance;
+      ball1.vx += nx * force;
+      ball1.vy += ny * force;
+    }
+
+    // 回転の力を適用
+    function applyRotation(ball1, ball2, force) {
+      const dx = ball2.x - ball1.x;
+      const dy = ball2.y - ball1.y;
+      const distance = getDistance(ball1, ball2);
+      const nx = dx / distance;
+      const ny = dy / distance;
+      const rotationForce = force / distance;
+      ball1.vx += ny * rotationForce;
+      ball1.vy -= nx * rotationForce;
+    }
+
+    // ランダムな色を取得
+    function getRandomColor() {
+      const colors = ['red', 'blue', 'green'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    mainLoop();
+  </script>
+</body>
+</html>

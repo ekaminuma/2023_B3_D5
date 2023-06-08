@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Color Guessing Game</title>
+    <style>
+        .color-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .color-box {
+            width: 200px;
+            height: 200px;
+            margin-right: 20px;
+            border: 2px solid black;
+        }
+
+        .color-bar {
+            width: 200px;
+            height: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Guessing Game</h1>
+    <div class="color-container">
+        <div class="color-box" id="color-box"></div>
+        <div class="color-box" id="user-color-box"></div>
+    </div>
+    <input type="color" id="color-input">
+    <button onclick="confirmColor()">OK</button>
+    <button onclick="checkColor()">Check</button>
+    <button onclick="generateColor()">Retry</button>
+    <p id="result"></p>
+
+    <script>
+        var colorBox = document.getElementById("color-box");
+        var userColorBox = document.getElementById("user-color-box");
+        var colorInput = document.getElementById("color-input");
+        var confirmButton = document.querySelector("button[data-action='confirm']");
+        var checkButton = document.querySelector("button[data-action='check']");
+        var retryButton = document.querySelector("button[data-action='retry']");
+        var result = document.getElementById("result");
+        var targetColor;
+        var userColor;
+
+        function generateColor() {
+            var randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+            colorBox.style.backgroundColor = randomColor;
+            targetColor = randomColor;
+            result.textContent = "";
+            userColorBox.style.backgroundColor = "white";
+            userColor = null;
+            confirmButton.disabled = false;
+            checkButton.disabled = true;
+        }
+
+        function confirmColor() {
+            userColor = colorInput.value;
+            userColorBox.style.backgroundColor = userColor;
+            confirmButton.disabled = true;
+            checkButton.disabled = false;
+        }
+
+        function checkColor() {
+            if (!userColor) {
+                alert("Please confirm a color first.");
+                return;
+            }
+
+            var hueDiff = getHueDifference(targetColor, userColor);
+            var saturationDiff = getSaturationDifference(targetColor, userColor);
+            var brightnessDiff = getBrightnessDifference(targetColor, userColor);
+
+            var hueBar = createColorBar(targetColor, hueDiff);
+            var saturationBar = createColorBar(targetColor, saturationDiff);
+            var brightnessBar = createColorBar(targetColor, brightnessDiff);
+
+            result.innerHTML = "Hue Difference: " + Math.floor(hueDiff) + "<br>";
+            result.appendChild(hueBar);
+            result.innerHTML += "Saturation Difference: " + Math.floor(saturationDiff) + "<br>";
+            result.appendChild(saturationBar);
+            result.innerHTML += "Brightness Difference: " + Math.floor(brightnessDiff) + "<br>";
+            result.appendChild(brightnessBar);
+        }
+
+        function getHueDifference(color1, color2) {
+            var hsb1 = rgbToHsb(color1);
+            var hsb2 = rgbToHsb(color2);
+
+            var hueDiff = Math.abs(hsb1.h - hsb2.h);
+            if (hueDiff > 180) {
+                hueDiff = 360 - hueDiff;
+            }
+
+            return hueDiff;
+        }
+
+        function getSaturationDifference(color1, color2) {
+            var hsb1 = rgbToHsb(color1);
+            var hsb2 = rgbToHsb(color2);
+
+            return Math.abs(hsb1.s - hsb2.s);
+        }
+
+        function getBrightnessDifference(color1, color2) {
+            var hsb1 = rgbToHsb(color1);
+            var hsb2 = rgbToHsb(color2);
+
+            return Math.abs(hsb1.b - hsb2.b);
+        }
+
+        function rgbToHsb(rgb) {
+            var r = parseInt(rgb.substr(1, 2), 16) / 255;
+            var g = parseInt(rgb.substr(3, 2), 16) / 255;
+            var b = parseInt(rgb.substr(5, 2), 16) / 255;
+
+            var max = Math.max(r, g, b);
+            var min = Math.min(r, g, b);
+            var diff = max - min;
+            var hue, saturation, brightness;
+
+            if (diff === 0) {
+                hue = 0;
+            } else if (max === r) {
+                hue = (60 * ((g - b) / diff) + 360) % 360;
+            } else if (max === g) {
+                hue = (60 * ((b - r) / diff) + 120) % 360;
+            } else {
+                hue = (60 * ((r - g) / diff) + 240) % 360;
+            }
+
+            if (max === 0) {
+                saturation = 0;
+            } else {
+                saturation = (diff / max) * 100;
+            }
+
+            brightness = max * 100;
+
+            return {
+                h: hue,
+                s: saturation,
+                b: brightness
+            };
+        }
+
+        function createColorBar(color, diff) {
+            var colorBar = document.createElement("div");
+            colorBar.classList.add("color-bar");
+            colorBar.style.backgroundColor = color;
+            colorBar.style.width = diff + "px";
+            return colorBar;
+        }
+
+        generateColor();
+    </script>
+</body>
+</html>

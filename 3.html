@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>数字当てゲーム</title>
+  </head>
+  <body>
+    <h1>数字当てゲーム</h1>
+    <p>1から100までの数字を当てよう！</p>
+    <input type="text" id="input-number">
+    <button onclick="checkNumber()">チェック！</button>
+    <p id="result"></p>
+    <script>
+      function checkNumber() {
+        var inputNumber = document.getElementById("input-number").value;
+        var randomNumber = Math.ceil(Math.random() * 100);
+        if (inputNumber === randomNumber.toString()) {
+          document.getElementById("result").innerHTML = "成功！";
+        } else {
+          document.getElementById("result").innerHTML = "失敗！正解は" + randomNumber + "でした。";
+        }
+      }
+    </script>
+  </body>
+</html>
