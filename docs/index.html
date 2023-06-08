@@ -4,25 +4,24 @@
   <title>2023 B3_D5 (Text-to-Code Web Application)</title>
   <style>
     .grid-container {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      grid-template-rows: repeat(5, 1fr);
-      gap: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      width: 500px; /* 必要に応じて適切なサイズに調整してください */
     }
 
     .grid-item {
-      position: relative;
+      flex-basis: 20%;
+      box-sizing: border-box;
       border: 1px solid black;
-      padding: 0;
-      overflow: hidden;
+      padding: 10px;
     }
 
     iframe {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      transform: scale(0.5);
+      width: 100%;
+      height: 100%;
       border: none;
+      transform: scale(0.5);
+      transform-origin: top left;
     }
   </style>
 </head>
