@@ -2,22 +2,22 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>”š“–‚ÄƒQ[ƒ€</title>
+    <title>æ•°å­—å½“ã¦ã‚²ãƒ¼ãƒ </title>
   </head>
   <body>
-    <h1>”š“–‚ÄƒQ[ƒ€</h1>
-    <p>1‚©‚ç100‚Ü‚Å‚Ì”š‚ğ“–‚Ä‚æ‚¤I</p>
+    <h1>æ•°å­—å½“ã¦ã‚²ãƒ¼ãƒ </h1>
+    <p>1ã‹ã‚‰100ã¾ã§ã®æ•°å­—ã‚’å½“ã¦ã‚ˆã†ï¼</p>
     <input type="text" id="input-number">
-    <button onclick="checkNumber()">ƒ`ƒFƒbƒNI</button>
+    <button onclick="checkNumber()">ãƒã‚§ãƒƒã‚¯ï¼</button>
     <p id="result"></p>
     <script>
       function checkNumber() {
         var inputNumber = document.getElementById("input-number").value;
         var randomNumber = Math.ceil(Math.random() * 100);
         if (inputNumber === randomNumber.toString()) {
-          document.getElementById("result").innerHTML = "¬Œ÷I";
+          document.getElementById("result").innerHTML = "æˆåŠŸï¼";
         } else {
-          document.getElementById("result").innerHTML = "¸”sI³‰ğ‚Í" + randomNumber + "‚Å‚µ‚½B";
+          document.getElementById("result").innerHTML = "å¤±æ•—ï¼æ­£è§£ã¯" + randomNumber + "ã§ã—ãŸã€‚";
         }
       }
     </script>
