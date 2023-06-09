@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Current Time in Different Cities</title>
+  <script>
+    function displayCurrentTime() {
+      var cities = [
+        { name: 'Asia/Tokyo', label: '東京' },
+        { name: 'Australia/Melbourne', label: 'メルボルン' },
+        { name: 'Asia/Kolkata', label: 'ムンバイ' },
+        { name: 'Europe/Rome', label: 'ローマ' },
+        { name: 'America/Los_Angeles', label: 'ロサンゼルス' },
+        { name: 'America/New_York', label: 'ニューヨーク' },
+        { name: 'Africa/Algiers', label: 'アルジェ' },
+        { name: 'Asia/Kuala_Lumpur', label: 'クアラルンプール' }
+      ];
+
+      // 都市ごとの現在時刻を取得
+      var cityTimes = cities.map(function(city) {
+        return {
+          name: city.label,
+          time: new Date().toLocaleString('en-US', { timeZone: city.name })
+        };
+      });
+
+      // 時刻が早い順に都市をソート
+      cityTimes.sort(function(a, b) {
+        return new Date(a.time) - new Date(b.time);
+      });
+
+      // 結果を表示
+      var output = '';
+      for (var i = 0; i < cityTimes.length; i++) {
+        output += cityTimes[i].name + ': ' + cityTimes[i].time + '<br>';
+      }
+
+      document.getElementById('currentTime').innerHTML = output;
+    }
+  </script>
+</head>
+<body>
+  <h1>Current Time in Different Cities</h1>
+  <button onclick="displayCurrentTime()">Get Current Time</button>
+  <p id="currentTime"></p>
+</body>
+</html>
+

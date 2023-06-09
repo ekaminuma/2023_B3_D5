@@ -1,40 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>危険</title>
-  <style>
-    #danger-text {
-      font-size: 48px;
-      font-weight: bold;
-      color: red;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-  <button id="button">光らせる</button>
-  <div id="danger-text">危険</div>
-
+  <meta charset="UTF-8">
+  <title>暗算テスト</title>
   <script>
-    var dangerText = document.getElementById("danger-text");
-    var isFlashing = false;
-    var interval;
+    var difficulty;
+    var num1, num2, operator, answer;
 
-    function toggleFlash() {
-      if (isFlashing) {
-        clearInterval(interval);
-        dangerText.style.color = "red";
-        isFlashing = false;
+    // ランダムな指定された桁数の数字を生成する関数
+    function generateRandomNumber(digits) {
+      var min = Math.pow(10, digits - 1);
+      var max = Math.pow(10, digits) - 1;
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    // ランダムな演算子を生成する関数
+    function generateRandomOperator() {
+      var operators = ['+', '-', '*', '/'];
+      var randomIndex = Math.floor(Math.random() * operators.length);
+      return operators[randomIndex];
+    }
+
+    // 問題を生成する関数
+    function generateProblem() {
+      switch (difficulty) {
+        case 'easy':
+          num1 = generateRandomNumber(1);
+          num2 = generateRandomNumber(1);
+          break;
+        case 'medium':
+          num1 = generateRandomNumber(2);
+          num2 = generateRandomNumber(2);
+          break;
+        case 'hard':
+          num1 = generateRandomNumber(3);
+          num2 = generateRandomNumber(3);
+          break;
+      }
+
+      operator = generateRandomOperator();
+      var problem = num1 + ' ' + operator + ' ' + num2;
+      answer = eval(problem); // 問題の答えを計算
+
+      return problem;
+    }
+
+    // 問題を表示する関数
+    function displayProblem() {
+      var problemElement = document.getElementById('problem');
+      problemElement.textContent = generateProblem();
+    }
+
+    // 難易度を設定する関数
+    function setDifficulty(selectedDifficulty) {
+      difficulty = selectedDifficulty;
+      displayProblem();
+    }
+
+    // 答えをチェックする関数
+    function checkAnswer() {
+      var userAnswer = document.getElementById('answer').value;
+      var problemElement = document.getElementById('problem');
+
+      if (userAnswer == answer) {
+        problemElement.textContent = '正解！';
       } else {
-        interval = setInterval(function() {
-          dangerText.style.color = (dangerText.style.color === "red") ? "yellow" : "red";
-        }, 500);
-        isFlashing = true;
+        problemElement.textContent = '不正解！';
       }
     }
 
-    var button = document.getElementById("button");
-    button.addEventListener("click", toggleFlash);
+    // ページが読み込まれたときに初期問題を表示
+    window.onload = function () {
+      displayProblem();
+    };
   </script>
+</head>
+<body>
+  <h1>暗算テスト</h1>
+  <h2>難易度を選択してください:</h2>
+  <button onclick="setDifficulty('easy')">Easy</button>
+  <button onclick="setDifficulty('medium')">Medium</button>
+  <button onclick="setDifficulty('hard')">Hard</button>
+
+  <div id="problem"></div>
+  <input type="text" id="answer">
+  <button onclick="checkAnswer()">回答する</button>
 </body>
 </html>
