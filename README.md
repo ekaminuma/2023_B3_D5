@@ -27,13 +27,13 @@ D5で制作したWEBアプリ
 
 生成AIの実践
 
-1回　Text-to-Text 挿絵付き文章生成1
-2回  Text-to-Text 挿絵付き文章生成2
-3回　プレゼン1回目
-4回  Text-to-Video
-5回  Text-to-3D
-6回  Text-to-Code 1 (Infographics)
-7回  Text-to-Code 2 (Web App)
-8回　プレゼン2回目
+- 1回　Text-to-Text 挿絵付き文章生成1
+- 2回  Text-to-Text 挿絵付き文章生成2
+- 3回　プレゼン1回目
+- 4回  Text-to-Video
+- 5回  Text-to-3D
+- 6回  Text-to-Code 1 (Infographics)
+- 7回  Text-to-Code 2 (Web App)
+- 8回　プレゼン2回目
 
 ---
