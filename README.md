@@ -1,5 +1,5 @@
 # 2023_B3_D5
-D5で制作したWEBアプリ
+[D5で制作したWEBアプリ学生作品](https://ekaminuma.github.io/2023_B3_D5/)
 (ChatGPTからJSコードを生成)
 
 1. [qr生成アプリ](1.html)
